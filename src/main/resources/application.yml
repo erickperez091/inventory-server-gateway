@@ -2,9 +2,11 @@ server:
   port: 9090
 spring:
   application:
-    name: server-gateway
+    name: internal-api-gateway
 
 eureka:
+  instance:
+    hostname: internal-api-gateway
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka

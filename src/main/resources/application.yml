@@ -5,6 +5,10 @@ spring:
     name: internal-api-gateway
   cloud:
     gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
       discovery:
         locator:
           enabled: true
@@ -22,3 +26,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+logging:
+  level:
+    org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter: trace
+    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: trace

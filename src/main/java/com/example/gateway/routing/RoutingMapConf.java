@@ -11,25 +11,29 @@ import reactor.netty.http.client.HttpClient;
 public class RoutingMapConf {
 
     @Bean
-    public RouteLocator configure( RouteLocatorBuilder routeLocatorBuilder ){
+    public RouteLocator configure(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
-                .route( "inventory-service", route -> route
-                        .path( "/api/product/v1/**" ).or().path( "/api/category/v1/**" )
-                        .filters( filter -> filter
-                                .rewritePath( "/api/(?<segment>/?.*)", "/$\\{segment}" ))
-                        .uri( "lb://inventory-service" ))
+                .route("inventory-service", route -> route
+                        .path("/api/product/v1/**").or().path("/api/category/v1/**")
+                        .filters(filter -> filter
+                                .rewritePath("/api/(?<segment>/?.*)", "/$\\{segment}"))
+                        .uri("lb://inventory-service"))
 
-                .route( "invoice-service", route -> route
-                        .path( "/api/invoice/v1/**" )
-                        .filters( filter -> filter
-                                .rewritePath( "/api/(?<segment>/?.*)", "/$\\{segment}" ))
-                        .uri( "lb://invoice-service" ))
-
+                .route("invoice-service", route -> route
+                        .path("/api/invoice/v1/**")
+                        .filters(filter -> filter
+                                .rewritePath("/api/(?<segment>/?.*)", "/$\\{segment}"))
+                        .uri("lb://invoice-service"))
+                .route("auth-service", route -> route
+                        .path("/api/auth/v1/**", "/api/user/v1/**")
+                        .filters(filter -> filter
+                                .rewritePath("/api/(?<segment>/?.*)", "/$\\{segment}"))
+                        .uri("lb://user-service"))
                 .build();
     }
 
     @Bean
     public HttpClient httpClient() {
-        return HttpClient.create().resolver( DefaultAddressResolverGroup.INSTANCE);
+        return HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
     }
 }

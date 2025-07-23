@@ -13,6 +13,18 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+  main:
+    web-application-type: reactive
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 3600000
+
+enable:
+  kafka: ${ENABLE_KAFKA:false}
+
+security:
+  enabled: ${SECURITY_ENABLED:false}
 
 eureka:
   instance:
@@ -28,5 +40,7 @@ eureka:
 
 logging:
   level:
+    com.netflix.discovery: DEBUG
+    org.springframework.cloud.netflix.eureka: DEBUG
     org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter: trace
     org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: trace

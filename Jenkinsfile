@@ -28,7 +28,7 @@ pipeline {
             steps {
                 configFileProvider([configFile(fileId: 'nexus-settings', variable: 'MAVEN_SETTINGS')]) {
                     echo "Building version ${params.VERSION}"
-                    sh "${MAVEN_HOME}/bin/mvn clean package -s $MAVEN_SETTINGS -U"
+                    sh "${MAVEN_HOME}/bin/mvn clean package -DallowInsecureProtocol=true -s $MAVEN_SETTINGS -U"
                 }
             }
         }

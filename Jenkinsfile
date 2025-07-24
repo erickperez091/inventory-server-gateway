@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'docker-agent' }
 
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'develop', description: 'Branch Name')

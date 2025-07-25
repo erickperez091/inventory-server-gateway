@@ -21,11 +21,11 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build JAR') {
             steps {
                 configFileProvider([configFile(fileId: 'nexus-settings', variable: 'MAVEN_SETTINGS')]) {
                     echo "Building version ${params.VERSION}"
-                    sh "${MAVEN_HOME}/bin/mvn clean package -DskipTests -DallowInsecureProtocol=true -s $MAVEN_SETTINGS -U"
+                    sh "${MAVEN_HOME}/bin/mvn clean package -DallowInsecureProtocol=true -s $MAVEN_SETTINGS -U"
                 }
             }
         }
@@ -61,11 +61,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def jarFile = "target/server-gateway-${params.VERSION}.jar"
                     sh """
-                        docker build --build-arg JAR_FILE=${jarFile} \
-                                     -t ${DOCKER_IMAGE}:${BUILD_NUMBER} \
-                                     -f Dockerfile .
+                        docker build \
+                          --build-arg JAR_FILE=target/server-gateway-${params.VERSION}.jar \
+                          -t ${DOCKER_IMAGE}:${BUILD_NUMBER} \
+                          -f Dockerfile .
                         docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
                     """
                 }

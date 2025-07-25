@@ -1,17 +1,24 @@
-# Imagen base con Java 21
-FROM eclipse-temurin:21-alpine
+# Stage 1: Build con Maven
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
+WORKDIR /app
+# Copy source code
+COPY . .
 
-# Directorio de trabajo
+# Copy setting with credentials for Nexus repository (must be in root project folder)
+#COPY settings.xml /root/.m2/settings.xml
+#RUN cat /root/.m2/settings.xml
+# Compile microservice and download libraries from Nexus repository
+ENV MAVEN_OPTS="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true"
+RUN mvn clean package #-s /root/.m2/settings.xml
+
+# Stage 2: Final image with JAVA
+FROM eclipse-temurin:21-alpine
 WORKDIR /app
 
-# Copiar el JAR generado por Maven (compilado por Jenkins)
-COPY target/server-gateway-*.jar app.jar
-
-# Variable de entorno (puedes sobrescribirla en docker run o docker-compose)
+# Copy generated JAR from builder
+COPY --from=builder /app/target/*.jar app.jar
 ENV SERVER_DISCOVERY="http://host.docker.internal:8761/eureka"
 
-# Puerto del microservicio
-EXPOSE 9090
+EXPOSE 9080
 
-# Comando de inicio
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -9,7 +9,8 @@ COPY . .
 #RUN cat /root/.m2/settings.xml
 # Compile microservice and download libraries from Nexus repository
 ENV MAVEN_OPTS="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true"
-RUN mvn clean package #-s /root/.m2/settings.xml
+RUN mvn clean package
+# -s /root/.m2/settings.xml
 
 # Stage 2: Final image with JAVA
 FROM eclipse-temurin:21-alpine

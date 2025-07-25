@@ -6,10 +6,6 @@ pipeline {
         string(name: 'VERSION', defaultValue: '1.0.1', description: 'Artifact version')
     }
 
-/*     tools {
-        jdk 'JDK24'
-    } */
-
     environment {
         MAVEN_HOME = tool 'Maven 3.9.6'
         DOCKER_IMAGE = "erickperez091/dev-server-gateway"
@@ -29,8 +25,7 @@ pipeline {
             steps {
                 configFileProvider([configFile(fileId: 'nexus-settings', variable: 'MAVEN_SETTINGS')]) {
                     echo "Building version ${params.VERSION}"
-                    sh "${MAVEN_HOME}/bin/mvn clean package -DallowInsecureProtocol=true -s $MAVEN_SETTINGS -U"
-                    sh "ls -lh target"
+                    sh "${MAVEN_HOME}/bin/mvn clean package -DskipTests -DallowInsecureProtocol=true -s $MAVEN_SETTINGS -U"
                 }
             }
         }
@@ -44,7 +39,7 @@ pipeline {
                     groupId: 'com.example',
                     version: "${params.VERSION}",
                     repository: 'maven-test-releases',
-                    credentialsId: 'nexus-creds', // Asegúrate que existe en Jenkins
+                    credentialsId: 'nexus-creds',
                     artifacts: [
                         [
                             artifactId: 'server-gateway',
@@ -62,16 +57,21 @@ pipeline {
                 )
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
+                    def jarFile = "target/server-gateway-${params.VERSION}.jar"
                     sh """
-                        docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
+                        docker build --build-arg JAR_FILE=${jarFile} \
+                                     -t ${DOCKER_IMAGE}:${BUILD_NUMBER} \
+                                     -f Dockerfile .
                         docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
                     """
                 }
             }
         }
+
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {

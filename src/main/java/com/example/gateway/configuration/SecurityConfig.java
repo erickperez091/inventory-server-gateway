@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -15,6 +16,7 @@ import org.springframework.web.server.WebFilter;
 @RequiredArgsConstructor
 @EnableReactiveMethodSecurity
 @ConditionalOnProperty(name = "security.enabled", havingValue = "true")
+@Order(1)
 public class SecurityConfig {
 
     private final JwtUtils jwtUtils;

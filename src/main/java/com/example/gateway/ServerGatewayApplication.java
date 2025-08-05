@@ -7,11 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan( { "com.example" } )
+@ComponentScan({"com.example"})
 public class ServerGatewayApplication {
 
-    public static void main( String[] args ) {
-        SpringApplication.run( ServerGatewayApplication.class, args );
+    public static void main(String[] args) {
+        SpringApplication.run(ServerGatewayApplication.class, args);
     }
 
 }

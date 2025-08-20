@@ -17,8 +17,6 @@ spring:
     web-application-type: reactive
     allow-bean-definition-overriding: true
 
-
-
 enable:
   kafka: ${ENABLE_KAFKA:false}
 

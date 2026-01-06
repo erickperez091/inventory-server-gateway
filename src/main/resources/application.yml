@@ -24,7 +24,7 @@ security:
   enabled: ${SECURITY_ENABLED:false}
   jwt:
     secret: ${JWT_SECRET}
-    expiration: 300000
+    expiration: 30000
 
 eureka:
   instance:

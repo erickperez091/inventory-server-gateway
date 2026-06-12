@@ -5,14 +5,16 @@ spring:
     name: internal-api-gateway
   cloud:
     gateway:
-      httpclient:
-        wiretap: true
-      httpserver:
-        wiretap: true
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      server:
+        webflux:
+          httpserver:
+            wiretap: true
+          httpclient:
+            wiretap: true
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
   main:
     web-application-type: reactive
     allow-bean-definition-overriding: true

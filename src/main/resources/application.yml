@@ -19,14 +19,11 @@ spring:
     web-application-type: reactive
     allow-bean-definition-overriding: true
 
-enable:
-  kafka: ${ENABLE_KAFKA:false}
-
 security:
   enabled: ${SECURITY_ENABLED:false}
   jwt:
-    secret: ${JWT_SECRET}
-    expiration: 30000
+    secret: ${JWT_SECRET:}
+    expiration: ${JWT_EXPIRATION:900000}
 
 eureka:
   instance:

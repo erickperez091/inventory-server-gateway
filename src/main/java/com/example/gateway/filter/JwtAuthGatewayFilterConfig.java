@@ -12,17 +12,10 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Log4j2
 @Component
 public class JwtAuthGatewayFilterConfig {
-    private final List<String> openPaths = List.of(
-            "/api/auth/v1/**",
-            "/ping",
-            "/actuator"
-    );
 
     private final ReactiveAuthenticationManager reactiveAuthenticationManager;
     private final CustomReactiveAuthEntryPoint authEntryPoint;

@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchange ->
                         exchange
                                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .pathMatchers("/api/auth/**", "/ping", "/api/*/actuator/health/**").permitAll()
+                                .pathMatchers("/actuator/health/**", "/api/auth/**", "/ping", "/api/*/actuator/health/**").permitAll()
                                 .anyExchange().authenticated())
                 .exceptionHandling(ex ->
                         ex.authenticationEntryPoint(new CustomReactiveAuthEntryPoint()))

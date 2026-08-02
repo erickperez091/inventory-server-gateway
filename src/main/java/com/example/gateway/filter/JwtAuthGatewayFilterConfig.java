@@ -12,6 +12,8 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.regex.Pattern;
+
 @RequiredArgsConstructor
 @Log4j2
 @Component
@@ -34,9 +36,11 @@ public class JwtAuthGatewayFilterConfig {
             return Mono.just(new UsernamePasswordAuthenticationToken(null, token));
         });
 
+        Pattern actuatorPattern = Pattern.compile("^/api/[^/]+/actuator(/.*)?$");
+
         ServerWebExchangeMatcher matcher = exchange -> {
             String path = exchange.getRequest().getPath().toString();
-            if (path.startsWith("/api/auth/") || path.equals("/ping") || path.startsWith("/actuator")) {
+            if (path.startsWith("/api/auth/") || path.equals("/ping") || actuatorPattern.matcher(path).matches()) {
                 return ServerWebExchangeMatcher.MatchResult.notMatch();
             }
             if (path.startsWith("/api/")) {

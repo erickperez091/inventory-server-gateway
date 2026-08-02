@@ -26,12 +26,13 @@ public class SecurityConfig {
                 )
         );
 
+
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange ->
                         exchange
                                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .pathMatchers("/api/auth/**", "/ping", "/actuator").permitAll()
+                                .pathMatchers("/api/auth/**", "/ping", "/api/*/actuator/health/**").permitAll()
                                 .anyExchange().authenticated())
                 .exceptionHandling(ex ->
                         ex.authenticationEntryPoint(new CustomReactiveAuthEntryPoint()))

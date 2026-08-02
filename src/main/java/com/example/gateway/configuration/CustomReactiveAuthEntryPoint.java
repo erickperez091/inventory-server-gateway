@@ -27,11 +27,11 @@ public class CustomReactiveAuthEntryPoint implements ServerAuthenticationEntryPo
         AuthErrorResponse authErrorResponse = new AuthErrorResponse("You are not authenticated", "AUTH-401-NON-AUTHENTICATED");
 
         if (ex instanceof InsufficientAuthenticationException) {
-            authErrorResponse = new AuthErrorResponse("You must login, not enough authentication", "AUTH-401-INSUFFICIENT-AUTH");
+            authErrorResponse = new AuthErrorResponse("You must login, not enough authentication", "AUTH-401-INSUFFICIENT-AUTH-GW");
         } else if (ex instanceof BadCredentialsException) {
-            authErrorResponse = new AuthErrorResponse("Invalid or expired token", "AUTH-401-BAD-CREDENTIALS");
+            authErrorResponse = new AuthErrorResponse("Invalid or expired token", "AUTH-401-BAD-CREDENTIALS-GW");
         } else if (ex instanceof AuthenticationCredentialsNotFoundException) {
-            authErrorResponse = new AuthErrorResponse("Missing Bearer token", "AUTH-401-MISSING-TOKEN");
+            authErrorResponse = new AuthErrorResponse("Missing Bearer token", "AUTH-401-MISSING-TOKEN-GW");
         }
         return authErrorResponse;
     }

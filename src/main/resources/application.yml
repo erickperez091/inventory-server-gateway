@@ -43,21 +43,3 @@ logging:
     org.springframework.cloud.netflix.eureka: DEBUG
     org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter: trace
     org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: trace
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-          - health
-          - info
-          - metrics
-  endpoint:
-    health:
-      probes:
-        enabled: true
-      show-details: always
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true

@@ -14,7 +14,7 @@ public class RoutingMapConf {
     public RouteLocator configure(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                 .route("inventory-service-actuator", route -> route
-                        .path("/api/product/actuator/**").or().path("/api/category/**")
+                        .path("/api/product/actuator/**")
                         .filters(filter -> filter
                                 .rewritePath("/api/product/(?<segment>/?.*)", "/$\\{segment}"))
                         .uri("lb://inventory-service"))
